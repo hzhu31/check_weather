@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if lang == 'zh' %}天气检查{% else %}Weather Check{% endif %}</title>
+</head>
+<body>
+    <h1>{% if lang == 'zh' %}输入城市{% else %}Enter City{% endif %}</h1>
+    <form method="post">
+        <input type="text" name="city" placeholder="{% if lang == 'zh' %}城市名称{% else %}City Name{% endif %}" required>
+        <button type="submit">{% if lang == 'zh' %}检查天气{% else %}Check Weather{% endif %}</button>
+    </form>
+    <p>
+        {% if lang == 'zh' %}
+        <a href="?lang=en">切换到英文</a>
+        {% else %}
+        <a href="?lang=zh">Switch to Chinese</a>
+        {% endif %}
+    </p>
+</body>
+</html>

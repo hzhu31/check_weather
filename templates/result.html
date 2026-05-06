@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if lang == 'zh' %}天气结果{% else %}Weather Result{% endif %}</title>
+</head>
+<body>
+    {% if lang == 'zh' %}
+    <h1>{{ weather.location }} 的天气</h1>
+    <p>温度: {{ weather.temperature_c }}°C (体感 {{ weather.feels_like_c }}°C)</p>
+    <p>湿度: {{ weather.humidity }}%</p>
+    <p>是否刮风: {% if weather.windy %}是{% else %}否{% endif %}</p>
+    <p>是否下雨: {% if weather.raining %}是{% else %}否{% endif %}</p>
+    <p>状况: {{ weather.condition }}</p>
+    <a href="/">返回</a>
+    {% else %}
+    <h1>Weather in {{ weather.location }}</h1>
+    <p>Temperature: {{ weather.temperature_c }}°C (Feels like {{ weather.feels_like_c }}°C)</p>
+    <p>Humidity: {{ weather.humidity }}%</p>
+    <p>Windy: {% if weather.windy %}Yes{% else %}No{% endif %}</p>
+    <p>Raining: {% if weather.raining %}Yes{% else %}No{% endif %}</p>
+    <p>Condition: {{ weather.condition }}</p>
+    <a href="/">Back</a>
+    {% endif %}
+    <p>
+        {% if lang == 'zh' %}
+        <a href="?lang=en">切换到英文</a>
+        {% else %}
+        <a href="?lang=zh">Switch to Chinese</a>
+        {% endif %}
+    </p>
+</body>
+</html>
