@@ -1,5 +1,28 @@
 from flask import Flask, render_template, request
 import requests
+from urllib.parse import quote_plus
+
+CITY_IMAGE_URLS = {
+    "beijing": "https://source.unsplash.com/featured/?beijing",
+    "new york": "https://source.unsplash.com/featured/?new-york-city",
+    "london": "https://source.unsplash.com/featured/?london",
+    "paris": "https://source.unsplash.com/featured/?paris",
+    "tokyo": "https://source.unsplash.com/featured/?tokyo",
+    "shanghai": "https://source.unsplash.com/featured/?shanghai",
+    "hong kong": "https://source.unsplash.com/featured/?hong-kong",
+    "sydney": "https://source.unsplash.com/featured/?sydney",
+    "moscow": "https://source.unsplash.com/featured/?moscow",
+    "singapore": "https://source.unsplash.com/featured/?singapore",
+}
+
+
+def get_city_image_url(city):
+    normalized = city.strip().lower()
+    if normalized in CITY_IMAGE_URLS:
+        return CITY_IMAGE_URLS[normalized]
+    query = quote_plus(city)
+    return f"https://source.unsplash.com/featured/?{query}"
+
 
 def get_weather(city):
     url = f"https://wttr.in/{city}?format=j1"
@@ -16,6 +39,7 @@ def get_weather(city):
 
     windy = int(wind_speed) > 10
     raining = "rain" in weather_desc.lower()
+    image_url = get_city_image_url(city)
 
     return {
         "location": city,
@@ -25,6 +49,7 @@ def get_weather(city):
         "humidity": humidity,
         "windy": windy,
         "raining": raining,
+        "image_url": image_url,
     }
 
 app = Flask(__name__)
