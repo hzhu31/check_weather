@@ -2,26 +2,9 @@ from flask import Flask, render_template, request
 import requests
 from urllib.parse import quote_plus
 
-CITY_IMAGE_URLS = {
-    "beijing": "https://source.unsplash.com/featured/?beijing",
-    "new york": "https://source.unsplash.com/featured/?new-york-city",
-    "london": "https://source.unsplash.com/featured/?london",
-    "paris": "https://source.unsplash.com/featured/?paris",
-    "tokyo": "https://source.unsplash.com/featured/?tokyo",
-    "shanghai": "https://source.unsplash.com/featured/?shanghai",
-    "hong kong": "https://source.unsplash.com/featured/?hong-kong",
-    "sydney": "https://source.unsplash.com/featured/?sydney",
-    "moscow": "https://source.unsplash.com/featured/?moscow",
-    "singapore": "https://source.unsplash.com/featured/?singapore",
-}
-
-
 def get_city_image_url(city):
-    normalized = city.strip().lower()
-    if normalized in CITY_IMAGE_URLS:
-        return CITY_IMAGE_URLS[normalized]
-    query = quote_plus(city)
-    return f"https://source.unsplash.com/featured/?{query}"
+    label = quote_plus(city.strip() or "City")
+    return f"https://loremflickr.com/900/420/{label}"
 
 
 def get_weather(city):

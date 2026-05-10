@@ -18,12 +18,28 @@
             box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
             padding: 24px;
         }
-        .weather-card img {
+        .weather-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 18px;
+        }
+        .weather-image img {
             width: 100%;
             max-height: 420px;
             object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 18px;
+            display: block;
+        }
+        .weather-image-label {
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            padding: 10px 18px;
+            background: rgba(15, 23, 42, 0.72);
+            color: #ffffff;
+            border-radius: 999px;
+            font-size: 0.95rem;
+            font-weight: 600;
         }
         .weather-card h1 {
             margin-top: 0;
@@ -31,6 +47,11 @@
         .weather-card p {
             line-height: 1.7;
             margin: 8px 0;
+        }
+        .weather-credit {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #475569;
         }
         .actions a {
             display: inline-block;
@@ -42,7 +63,11 @@
 </head>
 <body>
     <div class="weather-card">
-        <img src="{{ weather.image_url }}" alt="{{ weather.location }}" />
+        <div class="weather-image">
+            <img src="{{ weather.image_url }}" alt="{{ weather.location }}" onerror="this.onerror=null;this.src='{{ url_for('static', filename='fallback.svg') }}'" />
+            <div class="weather-image-label">{{ weather.location }}</div>
+        </div>
+        <p class="weather-credit">Photo from LoremFlickr</p>
         {% if lang == 'zh' %}
         <h1>{{ weather.location }} 的天气</h1>
         <p>温度: {{ weather.temperature_c }}°C (体感 {{ weather.feels_like_c }}°C)</p>
