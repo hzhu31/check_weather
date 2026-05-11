@@ -2,8 +2,22 @@ from flask import Flask, render_template, request
 import requests
 from urllib.parse import quote_plus
 
+import re
+
 def get_city_image_url(city):
-    label = quote_plus(city.strip() or "City")
+    # Try Teleport API for city images
+    slug = re.sub(r'[^a-z0-9]+', '-', city.lower()).strip('-')
+    url = f"https://api.teleport.org/api/urban_areas/slug:{slug}/images/"
+    try:
+        response = requests.get(url, timeout=10)
+        if response.status_code == 200:
+            data = response.json()
+            if data.get('photos'):
+                return data['photos'][0]['image']['web']
+    except:
+        pass
+    # Fallback to LoremFlickr with skyline
+    label = quote_plus(f"{city.strip() or 'City'} skyline")
     return f"https://loremflickr.com/900/420/{label}"
 
 
