@@ -1,24 +1,21 @@
 from flask import Flask, render_template, request
 import requests
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, quote
 
-import re
 
 def get_city_image_url(city):
-    # Try Teleport API for city images
-    slug = re.sub(r'[^a-z0-9]+', '-', city.lower()).strip('-')
-    url = f"https://api.teleport.org/api/urban_areas/slug:{slug}/images/"
+    headers = {'User-Agent': 'WeatherApp/1.0 (educational project)'}
+    name = city.strip().title()
     try:
-        response = requests.get(url, timeout=10)
+        url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{quote(name, safe='')}"
+        response = requests.get(url, timeout=10, headers=headers)
         if response.status_code == 200:
-            data = response.json()
-            if data.get('photos'):
-                return data['photos'][0]['image']['web']
+            thumb = response.json().get('thumbnail', {}).get('source', '')
+            if thumb:
+                return thumb
     except:
         pass
-    # Fallback to LoremFlickr with skyline
-    label = quote_plus(f"{city.strip() or 'City'} skyline")
-    return f"https://loremflickr.com/900/420/{label}"
+    return f"https://picsum.photos/seed/{quote_plus(name)}/900/420"
 
 
 def get_weather(city):
